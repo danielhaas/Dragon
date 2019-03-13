@@ -13,55 +13,45 @@ public class Dragon {
 
 	static int index = 0;
 	public static void main(final String[] args) {
-		try {
-
-			final GraphDrawer gd = new GraphDrawer("Dan", "Fred");
+		final GraphDrawer gd = new GraphDrawer("Dan", "Fred");
 
 
 
 
-			final Consumer<WayPoint> consumer = new Consumer() {
-				WayPoint oldPoint = null;
+		final Consumer<WayPoint> consumer = new Consumer() {
+			WayPoint oldPoint = null;
 
-				@Override
-				public void accept(final Object t) {
-					final WayPoint point = (WayPoint) t;
-					// TODO Auto-generated method stub
-					if (oldPoint!=null)
-					{
+			@Override
+			public void accept(final Object t) {
+				final WayPoint point = (WayPoint) t;
+				// TODO Auto-generated method stub
+				if (oldPoint!=null)
+				{
 
-						final double distance = point.distance(oldPoint).doubleValue();
+					final double distance = point.distance(oldPoint).doubleValue();
 
-						final long oldTime = oldPoint.getTime().get().toEpochSecond();
-						final long time = point.getTime().get().toEpochSecond();
+					final long oldTime = oldPoint.getTime().get().toEpochSecond();
+					final long time = point.getTime().get().toEpochSecond();
 
-						final long timeDiff = time - oldTime;
+					final long timeDiff = time - oldTime;
 
-						final double speed = distance/timeDiff*3.6;
+					final double speed = distance/timeDiff*3.6;
 
-						gd.addValue(time*1000, speed, index);
-					}
-
-					oldPoint = point;
+					gd.addValue(time*1000, speed, index);
 				}
-			};
 
-			final Dragon dragon = new
+				oldPoint = point;
+			}
+		};
+
+		final Dragon dragon = new Dragon();
 
 
-					index++;
+		dragon.addTrack("activity_3454859070.gpx", consumer);
+		index++;
+		dragon.addTrack("GPSdata.2019.03.12.gpx", consumer);
 
-			GPX.read("GPSdata.2019.03.12.gpx").tracks()
-			//			GPX.read("activity_3454859070.gpx").tracks()
-			.flatMap(Track::segments)
-			.flatMap(TrackSegment::points)
-			.forEachOrdered(consumer);
-
-			gd.show(true);
-		} catch (final IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		gd.show(true);
 	}
 
 
