@@ -35,6 +35,9 @@ public class SearchRaces implements Consumer{
 
 			final double speed = distance/timeDiff*3.6;
 
+			if (started)
+				myRace.addPoint(point);
+
 			if (speed<threshold)
 			{
 				if (started)
